@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading Comprehension – Vietnamese Meaning</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#e8f4ff,#fff7e6);color:#17324d}
+.container{max-width:900px;margin:auto;padding:18px}
+header{background:linear-gradient(135deg,#1976d2,#42a5f5);color:white;border-radius:20px;padding:22px;text-align:center;box-shadow:0 6px 18px #0002}
+h1{margin:0 0 8px;font-size:27px}
+.subtitle{font-size:15px}
+.section{margin-top:24px}
+.section-title{background:#fff;border-left:7px solid #1976d2;border-radius:12px;padding:14px 16px;font-size:21px;font-weight:bold;box-shadow:0 3px 10px #0001}
+.question{background:white;margin:14px 0;padding:17px;border-radius:16px;box-shadow:0 3px 12px #0001}
+.qnum{font-weight:bold;color:#1976d2;margin-bottom:9px}
+.english{font-size:18px;line-height:1.55;background:#f4f9ff;padding:12px;border-radius:10px;margin-bottom:12px}
+.options{display:grid;gap:9px}
+.option{border:2px solid #dbe7f2;border-radius:11px;padding:11px 13px;background:#fff;cursor:pointer;font-size:16px;line-height:1.45;transition:.2s}
+.option:hover{background:#eef7ff;border-color:#64b5f6}
+.option.correct{background:#dff7e7;border-color:#27ae60}
+.option.wrong{background:#ffe5e5;border-color:#e53935}
+.option.disabled{cursor:default}
+.feedback{display:none;margin-top:12px;padding:12px;border-radius:10px;line-height:1.55}
+.feedback.show{display:block}
+.feedback.good{background:#e8f8ee;color:#176b38}
+.feedback.bad{background:#fff0f0;color:#9b1c1c}
+.translation{font-weight:bold;margin-top:5px}
+.scorebox{position:sticky;top:8px;z-index:5;background:#17324d;color:white;border-radius:14px;padding:12px 16px;margin:18px 0;display:flex;justify-content:space-between;gap:10px;box-shadow:0 4px 12px #0003}
+.score{font-weight:bold}
+button#reset{display:block;margin:25px auto;padding:13px 28px;border:0;border-radius:12px;background:#1976d2;color:#fff;font-size:17px;cursor:pointer}
+button#reset:hover{background:#125ca5}
+@media(max-width:600px){
+ .container{padding:10px}
+ h1{font-size:22px}
+ .english{font-size:16px}
+ .option{font-size:15px}
+ .scorebox{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Reading Comprehension</h1>
+<div class="subtitle">Choose the correct Vietnamese meaning of each sentence.</div>
+</header>
+
+<div class="scorebox">
+<div>Housework: <span id="score1">0 / 15</span></div>
+<div>American Idol: <span id="score2">0 / 13</span></div>
+</div>
+
+<div class="section">
+<div class="section-title">Part 1 – Housework</div>
+<div id="part1"></div>
+</div>
+
+<div class="section">
+<div class="section-title">Part 2 – American Idol</div>
+<div id="part2"></div>
+</div>
+
+<button id="reset">Reset All</button>
+</div>
+
+<script>
+const questions1 = [
+["Most people think that housework is boring and is the responsibility of wives and mothers only.",
+["A. Hầu hết mọi người nghĩ việc nhà thú vị và dành cho tất cả thành viên.","B. Hầu hết mọi người nghĩ việc nhà nhàm chán và chỉ là trách nhiệm của vợ và mẹ.","C. Hầu hết mọi người nghĩ việc nhà khó khăn và chủ yếu dành cho trẻ em.","D. Hầu hết mọi người nghĩ việc nhà quan trọng và chỉ dành cho người lớn."],"B",
+"Hầu hết mọi người nghĩ việc nhà nhàm chán và chỉ là trách nhiệm của vợ và mẹ."],
+["Many parents don't ask their children to do housework so that they have more time to play or study.",
+["A. Nhiều cha mẹ yêu cầu con làm việc nhà để có thêm thời gian nghỉ ngơi.","B. Nhiều cha mẹ không yêu cầu con làm việc nhà để chúng có thêm thời gian chơi hoặc học.","C. Nhiều cha mẹ bắt con làm việc nhà để chúng học cách chăm sóc gia đình.","D. Nhiều cha mẹ cùng con làm việc nhà để có thêm thời gian vui chơi."],"B",
+"Nhiều cha mẹ không yêu cầu con làm việc nhà để chúng có thêm thời gian chơi hoặc học."],
+["However, studies show doing chores is good for children.",
+["A. Tuy nhiên, các nghiên cứu cho thấy làm việc nhà có lợi cho trẻ em.","B. Tuy nhiên, các nghiên cứu cho thấy trẻ em không thích làm việc nhà.","C. Tuy nhiên, các nghiên cứu cho thấy việc nhà gây khó khăn cho trẻ em.","D. Tuy nhiên, các nghiên cứu cho thấy trẻ em nên tránh làm việc nhà."],"A",
+"Tuy nhiên, các nghiên cứu cho thấy làm việc nhà có lợi cho trẻ em."],
+["Kids who do housework develop important life skills that they will need for the rest of their lives.",
+["A. Trẻ làm việc nhà phát triển những kỹ năng sống quan trọng mà chúng sẽ cần suốt đời.","B. Trẻ làm việc nhà học được những kỹ năng học tập quan trọng ở trường.","C. Trẻ làm việc nhà có nhiều thời gian hơn để phát triển các môn học.","D. Trẻ làm việc nhà chỉ học được những kỹ năng cần thiết trong gia đình."],"A",
+"Trẻ làm việc nhà phát triển những kỹ năng sống quan trọng mà chúng sẽ cần suốt đời."],
+["Doing the laundry, cleaning the house, and taking care of others are among the important skills that children will need when they start their own families.",
+["A. Giặt quần áo, dọn nhà và chăm sóc người khác là những kỹ năng trẻ cần khi đi học.","B. Giặt quần áo, dọn nhà và chăm sóc người khác là những kỹ năng trẻ cần khi có gia đình riêng.","C. Giặt quần áo, dọn nhà và chăm sóc người khác là những công việc cha mẹ không nên giao cho trẻ.","D. Giặt quần áo, dọn nhà và chăm sóc người khác là những kỹ năng chỉ cần thiết cho người lớn."],"B",
+"Giặt quần áo, dọn nhà và chăm sóc người khác là những kỹ năng trẻ cần khi có gia đình riêng."],
+["These are the things that schools cannot fully teach, so it's important for children to learn them at home.",
+["A. Đây là những điều trường học có thể dạy đầy đủ nên trẻ không cần học ở nhà.","B. Đây là những điều trường học không thể dạy đầy đủ nên trẻ cần học chúng ở nhà.","C. Đây là những điều trẻ chỉ có thể học được khi bắt đầu sống một mình.","D. Đây là những điều cha mẹ không cần dạy vì trường học sẽ chịu trách nhiệm."],"B",
+"Đây là những điều trường học không thể dạy đầy đủ nên trẻ cần học chúng ở nhà."],
+["Sharing housework also helps young people learn to take responsibility.",
+["A. Chia sẻ việc nhà cũng giúp người trẻ học cách chịu trách nhiệm.","B. Chia sẻ việc nhà cũng giúp người trẻ có thêm thời gian giải trí.","C. Chia sẻ việc nhà cũng giúp người trẻ tránh những trách nhiệm trong gia đình.","D. Chia sẻ việc nhà cũng giúp người trẻ học cách hoàn thành bài tập ở trường."],"A",
+"Chia sẻ việc nhà cũng giúp người trẻ học cách chịu trách nhiệm."],
+["They know that they have to try to finish their tasks even though they do not enjoy doing them.",
+["A. Họ biết rằng phải cố gắng hoàn thành nhiệm vụ dù không thích làm chúng.","B. Họ biết rằng chỉ cần hoàn thành nhiệm vụ khi họ cảm thấy thích làm.","C. Họ biết rằng cha mẹ sẽ hoàn thành nhiệm vụ nếu họ không muốn làm.","D. Họ biết rằng những nhiệm vụ không thú vị thì không cần phải hoàn thành."],"A",
+"Họ biết rằng phải cố gắng hoàn thành nhiệm vụ dù không thích làm chúng."],
+["Doing chores also helps develop children's gratitude to their parents.",
+["A. Làm việc nhà cũng giúp trẻ phát triển lòng biết ơn đối với cha mẹ.","B. Làm việc nhà cũng giúp trẻ hiểu rằng cha mẹ không cần sự giúp đỡ.","C. Làm việc nhà cũng giúp trẻ trở nên độc lập và không cần cha mẹ.","D. Làm việc nhà cũng giúp trẻ biết cách yêu cầu cha mẹ làm việc nhiều hơn."],"A",
+"Làm việc nhà cũng giúp trẻ phát triển lòng biết ơn đối với cha mẹ."],
+["When doing housework, they learn to appreciate all the hard work their parents do around the house for them.",
+["A. Khi làm việc nhà, trẻ học cách đánh giá cao những công việc vất vả cha mẹ làm cho mình.","B. Khi làm việc nhà, trẻ học cách tránh những công việc khó mà cha mẹ thường làm.","C. Khi làm việc nhà, trẻ hiểu rằng cha mẹ không cần phải làm việc trong gia đình.","D. Khi làm việc nhà, trẻ học cách giao những công việc khó khăn cho cha mẹ."],"A",
+"Khi làm việc nhà, trẻ học cách đánh giá cao những công việc vất vả cha mẹ làm cho mình."],
+["In addition, doing chores together helps strengthen family bonds, creating special moments between children and parents.",
+["A. Ngoài ra, làm việc nhà cùng nhau giúp tăng sự gắn kết gia đình và tạo những khoảnh khắc đặc biệt.","B. Ngoài ra, làm việc nhà cùng nhau khiến trẻ có ít thời gian dành cho cha mẹ hơn.","C. Ngoài ra, làm việc nhà cùng nhau giúp cha mẹ giảm trách nhiệm chăm sóc con cái.","D. Ngoài ra, làm việc nhà cùng nhau khiến các thành viên trong gia đình trở nên độc lập hơn."],"A",
+"Ngoài ra, làm việc nhà cùng nhau giúp tăng sự gắn kết gia đình và tạo những khoảnh khắc đặc biệt."],
+["It makes children feel they are members of a team.",
+["A. Điều đó khiến trẻ cảm thấy mình là những người lãnh đạo trong gia đình.","B. Điều đó khiến trẻ cảm thấy mình là thành viên của một đội.","C. Điều đó khiến trẻ cảm thấy mình phải làm mọi việc trong gia đình.","D. Điều đó khiến trẻ cảm thấy mình không cần sự giúp đỡ của người khác."],"B",
+"Điều đó khiến trẻ cảm thấy mình là thành viên của một đội."],
+["All in all, doing housework can bring a lot of benefits to children.",
+["A. Nhìn chung, làm việc nhà có thể mang lại nhiều lợi ích cho trẻ em.","B. Nhìn chung, làm việc nhà có thể gây ra nhiều vấn đề cho trẻ em.","C. Nhìn chung, trẻ em nên tránh làm việc nhà vì có nhiều bất lợi.","D. Nhìn chung, làm việc nhà chỉ mang lại lợi ích cho cha mẹ."],"A",
+"Nhìn chung, làm việc nhà có thể mang lại nhiều lợi ích cho trẻ em."],
+["It teaches them life skills and helps build their character.",
+["A. Nó dạy trẻ các kỹ năng sống và giúp hình thành tính cách của chúng.","B. Nó dạy trẻ các môn học và giúp cải thiện kết quả học tập.","C. Nó giúp trẻ có thêm thời gian chơi và phát triển sở thích cá nhân.","D. Nó giúp trẻ tránh trách nhiệm và trở nên thoải mái hơn trong cuộc sống."],"A",
+"Nó dạy trẻ các kỹ năng sống và giúp hình thành tính cách của chúng."],
+["Therefore, parents should encourage their kids to share the housework for their own good as well as the good of the whole family.",
+["A. Vì vậy, cha mẹ nên khuyến khích con chia sẻ việc nhà vì lợi ích của bản thân và cả gia đình.","B. Vì vậy, cha mẹ nên làm tất cả việc nhà để con có thêm thời gian học tập.","C. Vì vậy, cha mẹ nên yêu cầu con làm việc nhà để chúng không có thời gian vui chơi.","D. Vì vậy, cha mẹ nên tránh giao việc nhà cho con để bảo vệ sức khỏe của chúng."],"A",
+"Vì vậy, cha mẹ nên khuyến khích con chia sẻ việc nhà vì lợi ích của bản thân và cả gia đình."]
+];
+
+const questions2 = [
+["American Idol was shown for the first time on television in January 2002.",
+["A. American Idol được phát sóng lần đầu tiên trên truyền hình vào tháng 1 năm 2002.","B. American Idol được phát sóng lần cuối trên truyền hình vào tháng 1 năm 2002.","C. American Idol bắt đầu được sản xuất lần đầu tiên vào tháng 1 năm 2002.","D. American Idol trở thành chương trình nổi tiếng nhất vào tháng 1 năm 2002."],"A",
+"American Idol được phát sóng lần đầu tiên trên truyền hình vào tháng 1 năm 2002."],
+["At that time, there were many movies and TV series, but no reality competitions on TV.",
+["A. Khi đó có nhiều bộ phim và chương trình truyền hình, nhưng chưa có các cuộc thi truyền hình thực tế.","B. Khi đó có rất ít bộ phim và chương trình truyền hình, nhưng có nhiều cuộc thi thực tế.","C. Khi đó có nhiều cuộc thi truyền hình thực tế, nhưng chưa có phim và chương trình truyền hình.","D. Khi đó chỉ có các chương trình thực tế và không có bộ phim nào trên truyền hình."],"A",
+"Khi đó có nhiều bộ phim và chương trình truyền hình, nhưng chưa có các cuộc thi truyền hình thực tế."],
+["The participants in this programme are ordinary people who the audience can really identify with.",
+["A. Những người tham gia chương trình đều là các ca sĩ nổi tiếng mà khán giả đã biết.","B. Những người tham gia chương trình là những người bình thường mà khán giả có thể thực sự đồng cảm.","C. Những người tham gia chương trình đều là những diễn viên chuyên nghiệp được chọn từ Hollywood.","D. Những người tham gia chương trình là những người nổi tiếng mà khán giả có thể dễ dàng nhận ra."],"B",
+"Những người tham gia chương trình là những người bình thường mà khán giả có thể thực sự đồng cảm."],
+["First, judges travel all around America in search of the best singers and bring them to Hollywood.",
+["A. Đầu tiên, các giám khảo đi khắp nước Mỹ tìm những ca sĩ giỏi nhất và đưa họ đến Hollywood.","B. Đầu tiên, các ca sĩ đi khắp nước Mỹ tìm các giám khảo và đưa họ đến Hollywood.","C. Đầu tiên, các giám khảo chỉ tìm ca sĩ ở Hollywood rồi đưa họ đến các thành phố khác.","D. Đầu tiên, các ca sĩ nổi tiếng đi khắp nước Mỹ để chọn những giám khảo tốt nhất."],"A",
+"Đầu tiên, các giám khảo đi khắp nước Mỹ tìm những ca sĩ giỏi nhất và đưa họ đến Hollywood."],
+["Twenty-four to thirty-six participants are then chosen to go on to the next stages where they perform live on TV, and receive the judges’ opinions.",
+["A. Sau đó, 24 đến 36 người tham gia được chọn vào các vòng tiếp theo, biểu diễn trực tiếp trên TV và nhận nhận xét của giám khảo.","B. Sau đó, 24 đến 36 giám khảo được chọn để xem các thí sinh biểu diễn trực tiếp trên TV.","C. Sau đó, chỉ có 24 người tham gia được chọn để biểu diễn tại Hollywood và tránh nhận xét của giám khảo.","D. Sau đó, 36 đến 40 người tham gia được chọn để biểu diễn trực tiếp và bình chọn cho các giám khảo."],"A",
+"Sau đó, 24 đến 36 người tham gia được chọn vào các vòng tiếp theo, biểu diễn trực tiếp trên TV và nhận nhận xét của giám khảo."],
+["From the semi-final onwards, people over 13 and living in the US, Puerto Rico or the Virgin Islands can vote for their preferred singers online or through text messaging.",
+["A. Từ vòng bán kết, người trên 13 tuổi sống ở Mỹ, Puerto Rico hoặc Quần đảo Virgin có thể bình chọn cho ca sĩ yêu thích qua mạng hoặc tin nhắn.","B. Từ vòng đầu tiên, mọi người ở mọi độ tuổi trên thế giới có thể bình chọn cho ca sĩ yêu thích bằng thư.","C. Từ vòng chung kết, chỉ những người dưới 13 tuổi ở Mỹ mới có thể bình chọn cho các ca sĩ.","D. Từ vòng bán kết, chỉ các giám khảo sống ở Mỹ, Puerto Rico hoặc Quần đảo Virgin mới được bình chọn."],"A",
+"Từ vòng bán kết, người trên 13 tuổi sống ở Mỹ, Puerto Rico hoặc Quần đảo Virgin có thể bình chọn cho ca sĩ yêu thích qua mạng hoặc tin nhắn."],
+["The singer with the lowest number of votes is eliminated.",
+["A. Ca sĩ có số phiếu cao nhất sẽ được chọn làm người chiến thắng.","B. Ca sĩ có số phiếu thấp nhất sẽ bị loại.","C. Ca sĩ có số phiếu thấp nhất sẽ được đưa vào vòng chung kết.","D. Ca sĩ có số phiếu cao nhất sẽ bị loại khỏi cuộc thi."],"B",
+"Ca sĩ có số phiếu thấp nhất sẽ bị loại."],
+["On the final night, the most popular singer becomes the winner of that American Idol season.",
+["A. Trong đêm chung kết, ca sĩ được yêu thích nhất trở thành người chiến thắng mùa American Idol đó.","B. Trong đêm đầu tiên, ca sĩ nổi tiếng nhất trở thành giám khảo của mùa American Idol đó.","C. Trong đêm chung kết, ca sĩ có ít phiếu nhất trở thành người chiến thắng mùa đó.","D. Trong đêm cuối, tất cả ca sĩ cùng nhau trở thành người chiến thắng của chương trình."],"A",
+"Trong đêm chung kết, ca sĩ được yêu thích nhất trở thành người chiến thắng mùa American Idol đó."],
+["People watch American Idol not only to see the participants sing, but also hear the comments of the judges, who play an important role in the competition.",
+["A. Mọi người xem American Idol không chỉ để nghe thí sinh hát mà còn để nghe nhận xét của các giám khảo, những người có vai trò quan trọng.","B. Mọi người xem American Idol chỉ để nghe các giám khảo hát và không quan tâm đến thí sinh.","C. Mọi người xem American Idol để bình chọn cho các giám khảo vì họ quyết định người chiến thắng.","D. Mọi người xem American Idol chủ yếu để xem các bộ phim và chương trình khác trên truyền hình."],"A",
+"Mọi người xem American Idol không chỉ để nghe thí sinh hát mà còn để nghe nhận xét của các giám khảo, những người có vai trò quan trọng."],
+["Their different opinions and interesting arguments make the show very exciting.",
+["A. Những ý kiến khác nhau và cuộc tranh luận thú vị của họ khiến chương trình rất hấp dẫn.","B. Những ý kiến giống nhau và cuộc tranh luận của họ khiến chương trình trở nên nhàm chán.","C. Những lời nhận xét của thí sinh khiến chương trình khó hiểu và ít hấp dẫn hơn.","D. Những cuộc tranh luận của khán giả khiến các giám khảo không thể tiếp tục chương trình."],"A",
+"Những ý kiến khác nhau và cuộc tranh luận thú vị của họ khiến chương trình rất hấp dẫn."],
+["The first season of Vietnam Idol was shown in 2007.",
+["A. Mùa đầu tiên của Vietnam Idol được phát sóng vào năm 2007.","B. Mùa cuối cùng của Vietnam Idol được phát sóng lần đầu vào năm 2007.","C. Vietnam Idol được tổ chức lần đầu tiên tại Việt Nam vào năm 2017.","D. Mùa đầu tiên của Vietnam Idol kết thúc vào năm 2007."],"A",
+"Mùa đầu tiên của Vietnam Idol được phát sóng vào năm 2007."],
+["It included three stages: short performances to choose participants, semi-finals and finals.",
+["A. Chương trình gồm ba giai đoạn: các tiết mục ngắn để chọn thí sinh, bán kết và chung kết.","B. Chương trình gồm ba giai đoạn: vòng thử giọng, vòng loại và các trận đấu cuối cùng.","C. Chương trình gồm ba giai đoạn: bán kết, chung kết và trao giải cho giám khảo.","D. Chương trình chỉ gồm hai giai đoạn là biểu diễn ngắn và vòng chung kết."],"A",
+"Chương trình gồm ba giai đoạn: các tiết mục ngắn để chọn thí sinh, bán kết và chung kết."],
+["The winners of the show’s different seasons have become famous singers in Viet Nam.",
+["A. Những người chiến thắng ở các mùa khác nhau của chương trình đã trở thành những ca sĩ nổi tiếng ở Việt Nam.","B. Những người chiến thắng của chương trình đã trở thành các giám khảo nổi tiếng ở Việt Nam.","C. Những ca sĩ nổi tiếng ở Việt Nam đã trở thành người chiến thắng của mọi mùa chương trình.","D. Những người tham gia các mùa khác nhau đều trở thành ca sĩ nổi tiếng sau khi rời chương trình."],"A",
+"Những người chiến thắng ở các mùa khác nhau của chương trình đã trở thành những ca sĩ nổi tiếng ở Việt Nam."]
+];
+
+function render(list, containerId, part){
+ const box=document.getElementById(containerId);
+ list.forEach((q,i)=>{
+   const card=document.createElement("div");
+   card.className="question";
+   card.dataset.part=part;
+   card.innerHTML=`<div class="qnum">Question ${part===1?i+1:i+16}</div>
+   <div class="english">${q[0]}</div>
+   <div class="options"></div>
+   <div class="feedback"></div>`;
+   const opts=card.querySelector(".options");
+   q[1].forEach((txt,idx)=>{
+     const b=document.createElement("div");
+     b.className="option";
+     b.textContent=txt;
+     b.dataset.answer=String.fromCharCode(65+idx);
+     b.onclick=()=>check(card,q,part,b.dataset.answer);
+     opts.appendChild(b);
+   });
+   box.appendChild(card);
+ });
+}
+function check(card,q,part,chosen){
+ if(card.dataset.done) return;
+ card.dataset.done="1";
+ const correct=q[2];
+ const buttons=card.querySelectorAll(".option");
+ buttons.forEach(b=>{
+   b.classList.add("disabled");
+   if(b.dataset.answer===correct) b.classList.add("correct");
+   if(b.dataset.answer===chosen && chosen!==correct) b.classList.add("wrong");
+ });
+ const fb=card.querySelector(".feedback");
+ if(chosen===correct){
+   fb.className="feedback show good";
+   fb.innerHTML="<strong>✓ Correct!</strong><div class='translation'>"+q[3]+"</div>";
+   card.dataset.correct="1";
+ }else{
+   fb.className="feedback show bad";
+   fb.innerHTML="<strong>✗ Incorrect.</strong> The correct answer is <b>"+correct+"</b>.<div class='translation'>"+q[3]+"</div>";
+ }
+ updateScores();
+}
+function updateScores(){
+ let s1=document.querySelectorAll('#part1 .question[data-correct="1"]').length;
+ let s2=document.querySelectorAll('#part2 .question[data-correct="1"]').length;
+ document.getElementById("score1").textContent=s1+" / 15";
+ document.getElementById("score2").textContent=s2+" / 13";
+}
+function resetAll(){location.reload()}
+document.getElementById("reset").onclick=resetAll;
+render(questions1,"part1",1);
+render(questions2,"part2",2);
+</script>
+</body>
+</html>
